@@ -11,7 +11,8 @@ import ArgumentRoom from "@/components/ArgumentRoom";
 import UserProfile from "@/components/UserProfile";
 import Sidebar from "@/components/Sidebar";
 import Notifications from "@/components/Notifications";
-import MobileNav from "@/components/MobileNav"; // <-- Yeni
+import MobileNav from "@/components/MobileNav";
+import SettingsPage from "@/components/SettingsPage"; // <-- Yeni
 
 export default function Home() {
   const [appState, setAppState] = useState<'onboarding' | 'app'>('app'); 
@@ -30,29 +31,36 @@ export default function Home() {
   }
 
   return (
-    // Mobilde flex-col (dikey), Masaüstünde flex-row (yatay)
     <div className="flex flex-col md:flex-row h-screen bg-[#020617] overflow-hidden">
       
-      {/* Sol Menü (Sadece Masaüstü) */}
+      {/* Sol Menü */}
       <Sidebar activePage={activePage} setActivePage={setActivePage} />
 
       {/* Ana İçerik Alanı */}
       <div className="flex-1 h-full overflow-hidden relative mb-16 md:mb-0"> 
-        {/* mb-16: Mobilde alt menü için boşluk bırakır */}
         
         {activePage === 'map' && <DiscoveryMap />}
         {activePage === 'room' && <ArgumentRoom />}
         {activePage === 'profile' && (
           <div className="h-full overflow-y-auto custom-scrollbar">
-             <UserProfile />
+             {/* Profile setActivePage'i gönderiyoruz ki buton çalışsın */}
+             <UserProfile onNavigate={setActivePage} />
           </div>
         )}
         {activePage === 'notifications' && <Notifications />}
+        
+        {/* Ayarlar Sayfası: Geri tuşu profile döner */}
+        {activePage === 'settings' && (
+             <div className="h-full overflow-y-auto custom-scrollbar">
+                <SettingsPage onBack={() => setActivePage('profile')} />
+             </div>
+        )}
+
       </div>
 
-      {/* Alt Menü (Sadece Mobil) */}
+      {/* Alt Menü */}
       <MobileNav activePage={activePage} setActivePage={setActivePage} />
 
     </div>
   );
-}
+};

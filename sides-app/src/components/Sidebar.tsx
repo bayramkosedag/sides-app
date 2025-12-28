@@ -20,7 +20,7 @@ const Sidebar = ({ activePage, setActivePage }: SidebarProps) => {
   ];
 
   return (
-    <div className="w-64 h-screen bg-[#020617] border-r border-slate-800 flex flex-col shrink-0">
+    <div className="hidden md:flex w-64 h-screen bg-[#020617] border-r border-slate-800 flex-col shrink-0">
       
       {/* 1. Logo Alanı */}
       <div className="p-6 flex items-center gap-3">

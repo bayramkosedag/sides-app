@@ -12,12 +12,22 @@ import UserProfile from "@/components/UserProfile";
 import Sidebar from "@/components/Sidebar";
 import Notifications from "@/components/Notifications";
 import MobileNav from "@/components/MobileNav";
-import SettingsPage from "@/components/SettingsPage"; // <-- Yeni
+import SettingsPage from "@/components/SettingsPage";
 
 export default function Home() {
   const [appState, setAppState] = useState<'onboarding' | 'app'>('app'); 
   const [onboardingStep, setOnboardingStep] = useState(1);
   const [activePage, setActivePage] = useState('map'); 
+
+  // --- ÇIKIŞ YAPMA FONKSİYONU ---
+  const handleLogout = () => {
+    // Kullanıcıya soralım
+    if (window.confirm("Çıkış yapmak istediğinize emin misiniz?")) {
+      setAppState('onboarding'); // Uygulama modundan çık
+      setOnboardingStep(1);      // Kayıt adımını başa sar
+      setActivePage('map');      // Sayfayı sıfırla
+    }
+  };
 
   if (appState === 'onboarding') {
     return (
@@ -33,26 +43,31 @@ export default function Home() {
   return (
     <div className="flex flex-col md:flex-row h-screen bg-[#020617] overflow-hidden">
       
-      {/* Sol Menü */}
-      <Sidebar activePage={activePage} setActivePage={setActivePage} />
+      {/* Sol Menü: Çıkış fonksiyonunu buraya gönderiyoruz */}
+      <Sidebar 
+        activePage={activePage} 
+        setActivePage={setActivePage} 
+        onLogout={handleLogout} 
+      />
 
       {/* Ana İçerik Alanı */}
       <div className="flex-1 h-full overflow-hidden relative mb-16 md:mb-0"> 
         
         {activePage === 'map' && <DiscoveryMap />}
         {activePage === 'room' && <ArgumentRoom />}
-        {activePage === 'profile' && (
-          <div className="h-full overflow-y-auto custom-scrollbar">
-             {/* Profile setActivePage'i gönderiyoruz ki buton çalışsın */}
-             <UserProfile onNavigate={setActivePage} />
-          </div>
-        )}
         {activePage === 'notifications' && <Notifications />}
         
-        {/* Ayarlar Sayfası: Geri tuşu profile döner */}
+        {/* Profil Sayfası: Mobildeki çıkış butonu için onLogout'u gönderiyoruz */}
+        {activePage === 'profile' && (
+          <div className="h-full overflow-y-auto custom-scrollbar">
+             <UserProfile onNavigate={setActivePage} onLogout={handleLogout} />
+          </div>
+        )}
+        
+        {/* Ayarlar Sayfası: Çıkış butonu için onLogout'u gönderiyoruz */}
         {activePage === 'settings' && (
              <div className="h-full overflow-y-auto custom-scrollbar">
-                <SettingsPage onBack={() => setActivePage('profile')} />
+                <SettingsPage onBack={() => setActivePage('profile')} onLogout={handleLogout} />
              </div>
         )}
 

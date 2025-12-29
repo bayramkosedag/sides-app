@@ -3,12 +3,13 @@
 import React from 'react';
 import { User, Award, TrendingUp, AlertCircle, CheckCircle2, Shield, Calendar, MapPin, Settings, LogOut } from 'lucide-react';
 
-// DİKKAT: Sayfa değiştirme fonksiyonunu (prop) kabul ediyoruz
+// DÜZELTME: Hem onNavigate hem de onLogout'u kabul ediyoruz
 interface UserProfileProps {
   onNavigate?: (page: string) => void;
+  onLogout?: () => void; // <-- Bu satırı eklememiş olabiliriz
 }
 
-const UserProfile = ({ onNavigate }: UserProfileProps) => {
+const UserProfile = ({ onNavigate, onLogout }: UserProfileProps) => {
   return (
     <div className="min-h-screen bg-[#0F172A] text-slate-300 font-sans pb-20 md:pb-0">
       
@@ -16,15 +17,21 @@ const UserProfile = ({ onNavigate }: UserProfileProps) => {
       <div className="h-40 md:h-48 bg-gradient-to-r from-blue-900 to-slate-900 border-b border-slate-800 relative">
         <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-[#0F172A] to-transparent"></div>
         
-        {/* MOBİL AYARLAR BUTONU */}
+        {/* MOBİL İÇİN SAĞ ÜST BUTONLAR */}
         <div className="absolute top-4 right-4 flex gap-2 md:hidden">
+            {/* Ayarlar Butonu */}
             <button 
-                onClick={() => onNavigate && onNavigate('settings')} // <-- BURASI EKLENDİ
+                onClick={() => onNavigate && onNavigate('settings')}
                 className="p-2 bg-slate-800/50 backdrop-blur text-white rounded-full border border-slate-700"
             >
                 <Settings className="w-5 h-5" />
             </button>
-            <button className="p-2 bg-rose-900/50 backdrop-blur text-rose-200 rounded-full border border-rose-800">
+            
+            {/* Çıkış Butonu (DÜZELTME: onClick bağlandı) */}
+            <button 
+                onClick={onLogout}
+                className="p-2 bg-rose-900/50 backdrop-blur text-rose-200 rounded-full border border-rose-800"
+            >
                 <LogOut className="w-5 h-5" />
             </button>
         </div>
@@ -51,10 +58,10 @@ const UserProfile = ({ onNavigate }: UserProfileProps) => {
               <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> Üyelik: Ara 2025</span>
             </p>
 
-            {/* MASAÜSTÜ BUTONLARI */}
+            {/* MASAÜSTÜ İÇİN BUTONLAR */}
             <div className="hidden md:flex gap-3 mt-4">
                 <button 
-                    onClick={() => onNavigate && onNavigate('settings')} // <-- BURASI EKLENDİ
+                    onClick={() => onNavigate && onNavigate('settings')}
                     className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors"
                 >
                     <Settings className="w-4 h-4" /> Profili Düzenle
@@ -71,7 +78,7 @@ const UserProfile = ({ onNavigate }: UserProfileProps) => {
           </div>
         </div>
 
-        {/* İstatistikler */}
+        {/* İstatistikler (Değişmedi) */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-8 md:mb-12">
           <StatCard icon={<CheckCircle2 className="w-5 h-5 text-blue-400" />} label="Kazanılan" value="14" desc="Argüman" />
           <StatCard icon={<Shield className="w-5 h-5 text-amber-400" />} label="Teslimiyet" value="3" desc="Doğruyu kabul" highlight />
@@ -111,7 +118,7 @@ const UserProfile = ({ onNavigate }: UserProfileProps) => {
   );
 };
 
-// Alt bileşenler aynı
+// Alt bileşenler
 const StatCard = ({ icon, label, value, desc, highlight }: any) => (
   <div className={`p-3 md:p-5 rounded-xl border flex flex-col justify-between h-28 md:h-32 transition-all hover:scale-[1.02] ${highlight ? 'bg-blue-900/10 border-blue-500/50 shadow-[0_0_20px_rgba(59,130,246,0.15)]' : 'bg-[#1E293B] border-slate-700/50'}`}>
     <div className="flex justify-between items-start"><div className="p-1.5 md:p-2 bg-[#0F172A] rounded-lg border border-slate-700">{icon}</div><span className="text-xl md:text-2xl font-bold text-white">{value}</span></div>

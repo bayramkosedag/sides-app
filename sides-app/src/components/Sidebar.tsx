@@ -6,9 +6,10 @@ import { LayoutDashboard, Network, User, Bell, Settings, LogOut } from 'lucide-r
 interface SidebarProps {
   activePage: string;
   setActivePage: (page: string) => void;
+  onLogout: () => void; // <-- Yeni emir
 }
 
-const Sidebar = ({ activePage, setActivePage }: SidebarProps) => {
+const Sidebar = ({ activePage, setActivePage, onLogout }: SidebarProps) => {
   const menuItems = [
     { id: 'map', label: 'Keşif Haritası', icon: <LayoutDashboard className="w-5 h-5" /> },
     { id: 'room', label: 'Tartışma Odası', icon: <Network className="w-5 h-5" /> },
@@ -47,14 +48,19 @@ const Sidebar = ({ activePage, setActivePage }: SidebarProps) => {
 
       <div className="p-4 border-t border-slate-800 space-y-1">
         <button 
-          onClick={() => setActivePage('settings')} // <-- BURASI EKLENDİ
+          onClick={() => setActivePage('settings')} 
           className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors
              ${activePage === 'settings' ? 'text-blue-400 bg-blue-600/10' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}
         >
           <Settings className="w-5 h-5" />
           <span className="font-medium text-sm">Ayarlar</span>
         </button>
-        <button className="w-full flex items-center gap-3 px-4 py-3 text-rose-400 hover:bg-rose-900/10 rounded-xl transition-colors">
+
+        {/* ÇIKIŞ BUTONU BAĞLANDI */}
+        <button 
+          onClick={onLogout} 
+          className="w-full flex items-center gap-3 px-4 py-3 text-rose-400 hover:bg-rose-900/10 rounded-xl transition-colors"
+        >
           <LogOut className="w-5 h-5" />
           <span className="font-medium text-sm">Çıkış Yap</span>
         </button>

@@ -1,17 +1,17 @@
 "use client";
 
 import React from 'react';
-import { ArrowLeft, User, Lock, Bell, Moon, LogOut, Trash2, Save } from 'lucide-react';
+import { ArrowLeft, User, Lock, Bell, Moon, LogOut, Trash2, Save, AlertCircle } from 'lucide-react';
 
 interface SettingsPageProps {
   onBack: () => void;
+  onLogout: () => void; // <-- Yeni emir
 }
 
-const SettingsPage = ({ onBack }: SettingsPageProps) => {
+const SettingsPage = ({ onBack, onLogout }: SettingsPageProps) => {
   return (
     <div className="min-h-screen bg-[#0F172A] text-slate-300 font-sans pb-20">
       
-      {/* Header */}
       <div className="flex items-center gap-4 p-6 border-b border-slate-800 sticky top-0 bg-[#0F172A]/90 backdrop-blur z-30">
         <button onClick={onBack} className="p-2 hover:bg-slate-800 rounded-full transition-colors">
           <ArrowLeft className="w-6 h-6 text-white" />
@@ -124,7 +124,11 @@ const SettingsPage = ({ onBack }: SettingsPageProps) => {
         
         {/* Çıkış Yap Butonu */}
         <div className="pt-4 flex justify-center">
-            <button className="text-slate-500 hover:text-white flex items-center gap-2 text-sm font-medium transition-colors">
+            {/* DÜZELTME BURADA YAPILDI: onClick EKLENDİ */}
+            <button 
+                onClick={onLogout}
+                className="text-slate-500 hover:text-white flex items-center gap-2 text-sm font-medium transition-colors"
+            >
                 <LogOut className="w-4 h-4" /> Oturumu Kapat
             </button>
         </div>
@@ -133,7 +137,5 @@ const SettingsPage = ({ onBack }: SettingsPageProps) => {
     </div>
   );
 };
-// Icon import hatasını önlemek için AlertCircle'ı burada ekliyoruz
-import { AlertCircle } from 'lucide-react';
 
 export default SettingsPage;
